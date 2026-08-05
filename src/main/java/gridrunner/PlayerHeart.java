@@ -32,4 +32,8 @@ public class PlayerHeart extends Path {
                 new CubicCurveTo(-cX2, cY2, -cX1, cY1, sX, sY)
         );
     }
+
+    public void takeDamage() {
+        this.setFill(Color.BLACK);
+    }
 }

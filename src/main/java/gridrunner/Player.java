@@ -7,12 +7,15 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player extends Circle {
 
     private Translate position, startPosition;
     private double centerX, centerY, radius;
+    int currLife;
+    List<PlayerHeart> myHearts;
 
     public Player ( double radius,
                     double positionX, double positionY,
@@ -34,6 +37,14 @@ public class Player extends Circle {
         );
     }
 
+    public Player ( double radius,
+                    double positionX, double positionY,
+                    Color fillColor, Color strokeColor,
+                    List<PlayerHeart> myHearts) {
+        this(radius, positionX, positionY, fillColor, strokeColor);
+        this.myHearts = List.copyOf(myHearts);
+        currLife = this.myHearts.size() - 1;
+    }
 
     public void update(double dt, double speed, Input input, List<Rectangle> walls) {
         double dx = 0;
@@ -135,7 +146,18 @@ public class Player extends Circle {
         return this.getParent().sceneToLocal(rectToScene);
     }
 
+    public void setLifeHearts(List<PlayerHeart> hearts) {
+        this.myHearts = List.copyOf(hearts);
+        currLife = this.myHearts.size() - 1;
+    }
+
     public void takeDamage() {
         resetState();
+        myHearts.get(currLife).takeDamage();
+        currLife--;
+    }
+
+    public boolean isAlive() {
+        return currLife >= 0;
     }
 }

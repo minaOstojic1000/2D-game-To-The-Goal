@@ -125,7 +125,9 @@ public class Main extends Application {
 
         root.getChildren().addAll(setUpDownEnemies());
 
-        root.getChildren().addAll(setUpHearts(3));
+        List<PlayerHeart> hearts = setUpHearts(3);
+        root.getChildren().addAll(hearts);
+        player.setLifeHearts(hearts);
 
         Scene scene = new Scene ( root, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT );
         scene.setFill ( Constants.BACKGROUND_COLOR );
@@ -152,7 +154,7 @@ public class Main extends Application {
                     }
                 }
 
-                if ( player.touches ( level.getGoal ( ) ) ) {
+                if ( player.touches ( level.getGoal ( ) ) || !player.isAlive()) {
                     return;
                 }
 
