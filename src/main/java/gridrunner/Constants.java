@@ -1,21 +1,26 @@
 package gridrunner;
 
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 
 public class Constants {
     public static final String[] MAP = {
-            "####################",
-            "#S.................#",
-            "#..................#",
-            "#...########.......#",
+            "HHH#################",
+            "#S.........B.......#",
+            "#..........B.......#",
+            "#.U.########.......#",
+            "#...#..........R...#",
             "#...#..............#",
-            "#...#..............#",
             "#...########.......#",
             "#..................#",
             "#..................#",
-            "#.......########...#",
+            "#.......########.U.#",
             "#.......#..........#",
-            "#.......#..........#",
+            "#....R..#..........#",
             "#.......########...#",
             "#................G.#",
             "####################"
@@ -38,7 +43,7 @@ public class Constants {
     public static final Color BLINKING_WALL_STROKE = Color.DARKORANGE;
     public static final double BLINKING_WALL_DURATION = 2;
     public static final double BLINKING_WALL_WIDTH = TILE_SIZE;
-    public static final double BLINKING_WALL_HEIGHT = 2 * TILE_SIZE;
+    public static final double BLINKING_WALL_HEIGHT = TILE_SIZE;
     public static final double BLINKING_WALL_UNIT_WIDTH = TILE_SIZE;
     public static final double BLINKING_WALL_UNIT_HEIGHT = TILE_SIZE;
 
@@ -54,4 +59,27 @@ public class Constants {
     public static final double HEART_SIZE = TILE_SIZE / 2.0;
     public static final Color HEART_COLOR = Color.RED;
     public static final Color HEART_STROKE = Color.BLACK;
+
+    public static final double ROTATING_ENEMY_AXLE_WIDTH = TILE_SIZE / 2.0;
+    public static final double ROTATING_ENEMY_STICK_WIDTH = 6;
+    public static final double ROTATING_ENEMY_STICK_HEIGHT = 160;
+    public static final Color ROTATING_ENEMY_COLOR = Color.ORCHID;
+    public static final Color ROTATING_ENEMY_STROKE = Color.BLACK;
+    public static final double ROTATING_ENEMY_SPEED = 80;
+
+    public static final Color COIN_COLOR = Color.GOLDENROD;
+    public static final Color COIN_STROKE = Color.BLACK;
+    public static final double COIN_RADIUS = TILE_SIZE / 4.0;
+
+    public static final Color LABEL_POINTS_COLOR = Color.GOLD;
+    public static final Font LABEL_POINTS_FONT = Font.font("Consolas", FontWeight.BOLD, 20);
+    public static final Color LABEL_TIME_COLOR = Color.WHITE;
+    public static final Font LABEL_TIME_FONT = Font.font("Consolas", FontWeight.BOLD, 20);
+
+    public static final Color LABEL_END_GAME_COLOR = Color.WHITE;
+    public static final Font LABEL_END_GAME_FONT = Font.font("Impact", FontWeight.BOLD, FontPosture.REGULAR, 48);
+    public static final double PANEL_END_GAME_OPACITY = 0.8;
+    public static final Background PANEL_END_GAME_BACKGROUND = new Background(new BackgroundFill(Color.BLACK, null, null));
+    public static final String WIN_MSG = "YOU WIN!";
+    public static final String LOSE_MSG = "GAME OVER";
 }

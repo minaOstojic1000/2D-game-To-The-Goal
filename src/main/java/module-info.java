@@ -3,4 +3,7 @@ module gridrunner {
     requires jdk.xml.dom;
     requires java.desktop;
     exports gridrunner;
+    exports gridrunner.interfaces;
+    exports gridrunner.gameObjects;
+    exports gridrunner.infoPanes;
 }

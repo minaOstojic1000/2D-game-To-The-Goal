@@ -1,5 +1,7 @@
-package gridrunner;
+package gridrunner.gameObjects;
 
+import gridrunner.Player;
+import gridrunner.interfaces.IEnemy;
 import javafx.animation.TranslateTransition;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -8,9 +10,9 @@ import javafx.util.Duration;
 
 public class UpDownEnemy extends Rectangle implements IEnemy {
 
-    double speed;
-    double yDistance = 0;
-    TranslateTransition moving;
+    private double speed;
+    private double yDistance = 0;
+    private TranslateTransition moving;
 
     UpDownEnemy(double width, double height, double speed,
                 Color fillColor, Color strokeColor) {
@@ -79,7 +81,7 @@ public class UpDownEnemy extends Rectangle implements IEnemy {
     }
 
     @Override
-    public void doDamage(Player player) {
-        player.takeDamage();
+    public boolean touchesPlayer(Player player) {
+        return player.overlaps(this);
     }
 }

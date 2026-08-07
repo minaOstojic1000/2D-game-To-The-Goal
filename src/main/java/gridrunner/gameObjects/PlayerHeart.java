@@ -1,4 +1,4 @@
-package gridrunner;
+package gridrunner.gameObjects;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;

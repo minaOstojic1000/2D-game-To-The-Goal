@@ -1,16 +1,15 @@
-package gridrunner;
+package gridrunner.gameObjects;
 
+import gridrunner.Player;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Bounds;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
 import javafx.util.Duration;
-import org.w3c.dom.css.Rect;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,28 +17,35 @@ import java.util.List;
 
 public class BlinkingWalls extends Group {
 
-    double duration, currSlices; // slices in seconds
-    double width, height;
-    double startX, startY;
-    List<Rectangle> walls;
-    double transitionDuration = 0.1;
+    private double duration; // slices in seconds
+    private double width, height;
+    private double startX, startY;
+    private List<Rectangle> walls;
+    private double transitionDuration = 0.1;
 
     public BlinkingWalls(double width, double height, double positionX, double positionY,
                          Color fillColor, Color strokeColor, double duration,
-                         double rectW, double rectH,
-                         List<Rectangle> playerWalls, Player player) {
+                         double rectW, double rectH) {
         this.width = width; this.height = height;
         this.duration = duration;
         this.startX = positionX; this.startY = positionY;
 
         initRectangles(rectW, rectH, fillColor, strokeColor);
 
-        setAnimation(duration, playerWalls, player);
-
         super.getTransforms().addAll(
                 new Translate(startX, startY)
         );
         this.setOpacity(0);
+    }
+
+    public BlinkingWalls(double width, double height, double positionX, double positionY,
+                         Color fillColor, Color strokeColor, double duration,
+                         double rectW, double rectH,
+                         List<Rectangle> playerWalls, Player player) {
+
+        this(width, height, positionX, positionY, fillColor, strokeColor, duration, rectW, rectH);
+
+        setAnimation(duration, playerWalls, player);
     }
 
     private void initRectangles(double oneW, double oneH, Color fillColor, Color strokeColor) {
@@ -116,4 +122,12 @@ public class BlinkingWalls extends Group {
 
     public List<Rectangle> getWalls ( ) { return Collections.unmodifiableList ( this.walls ); }
 
+    public void startBlinking(double duration, List<Rectangle> walls, Player player) {
+        this.duration = duration;
+        setAnimation(duration, walls, player);
+    }
+
+    public double getDuration() {
+        return duration;
+    }
 }

@@ -1,13 +1,12 @@
 package gridrunner;
 
+import gridrunner.gameObjects.PlayerHeart;
 import javafx.geometry.Bounds;
-import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Player extends Circle {
@@ -16,6 +15,7 @@ public class Player extends Circle {
     private double centerX, centerY, radius;
     int currLife;
     List<PlayerHeart> myHearts;
+    int points = 0;
 
     public Player ( double radius,
                     double positionX, double positionY,
@@ -151,13 +151,23 @@ public class Player extends Circle {
         currLife = this.myHearts.size() - 1;
     }
 
-    public void takeDamage() {
+    public void takeDamage(int numOfLives) {
         resetState();
-        myHearts.get(currLife).takeDamage();
-        currLife--;
+        for (int i = 0; i < numOfLives; i++) {
+            if (currLife < 0)
+                return;
+            myHearts.get(currLife).takeDamage();
+            currLife--;
+        }
+    }
+
+    public void claimReward(int numOfPoints) {
+        points += numOfPoints;
     }
 
     public boolean isAlive() {
         return currLife >= 0;
     }
+
+    public int getPoints() { return points; }
 }
