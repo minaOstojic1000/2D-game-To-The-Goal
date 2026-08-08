@@ -1,6 +1,6 @@
 package gridrunner.infoPanes;
 
-import gridrunner.Constants;
+import gridrunner.constants.Constants;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
@@ -13,7 +13,6 @@ public class AdditionalInformation extends StackPane {
     private Label timeLabel;
     private Label pointsLabel;
     long startTime;
-    private String timeFormat = "%02d:%02d", pointsFormat = "POINTS: %d  ";
 
     public AdditionalInformation(double paneWidth, double paneHeight, double paneX, double paneY) {
 
@@ -26,15 +25,17 @@ public class AdditionalInformation extends StackPane {
         this.getTransforms().add(
                 new Translate(paneX, paneY)
         );
+
+        this.hide();
     }
 
     private void setLabels() {
-        timeLabel = new Label(String.format(timeFormat, 0, 0));
+        timeLabel = new Label(String.format(Constants.TIME_FORMAT, 0, 0));
         timeLabel.setTextFill(Constants.LABEL_TIME_COLOR);
         timeLabel.setFont(Constants.LABEL_TIME_FONT);
         timeLabel.setAlignment(CENTER);
 
-        pointsLabel = new Label(String.format(pointsFormat, 0));
+        pointsLabel = new Label(String.format(Constants.POINTS_FORMAT, 0));
         pointsLabel.setTextFill(Constants.LABEL_POINTS_COLOR);
         pointsLabel.setFont(Constants.LABEL_POINTS_FONT);
         pointsLabel.setAlignment(Pos.CENTER_LEFT);
@@ -52,11 +53,11 @@ public class AdditionalInformation extends StackPane {
         long passedSeconds = (now - startTime) / 1_000_000_000;
         long minutes = passedSeconds / 60;
         long seconds = passedSeconds % 60;
-        timeLabel.setText(String.format(timeFormat, minutes, seconds));
+        timeLabel.setText(String.format(Constants.TIME_FORMAT, minutes, seconds));
     }
 
     public void updatePointsLabel(int points) {
-        pointsLabel.setText(String.format(pointsFormat, points));
+        pointsLabel.setText(String.format(Constants.POINTS_FORMAT, points));
     }
 
     public void updateAll(long now, int points) {
@@ -70,5 +71,13 @@ public class AdditionalInformation extends StackPane {
 
     public String getPointsLabelText() {
         return pointsLabel.getText();
+    }
+
+    public void show() {
+        setVisible(true);
+    }
+
+    public void hide() {
+        setVisible(false);
     }
 }

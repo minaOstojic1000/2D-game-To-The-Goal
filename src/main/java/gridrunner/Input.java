@@ -51,4 +51,5 @@ public class Input {
     }
 
     public boolean keyR() { return this.isClicked(KeyCode.R); }
+
 }

@@ -1,6 +1,6 @@
 package gridrunner.infoPanes;
 
-import gridrunner.Constants;
+import gridrunner.constants.Constants;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
@@ -27,7 +27,8 @@ public class EndOfGame extends StackPane {
         );
 
         this.setBackground(Constants.PANEL_END_GAME_BACKGROUND);
-        this.setOpacity(0);
+        this.setOpacity(Constants.PANEL_END_GAME_OPACITY);
+        this.hide();
     }
 
     public void setText(String text) {
@@ -39,11 +40,15 @@ public class EndOfGame extends StackPane {
     }
 
     public void show() {
-        this.setOpacity(Constants.PANEL_END_GAME_OPACITY);
+        setVisible(true);
     }
 
     public void show(String text) {
         setText(text);
         show();
+    }
+
+    public void hide() {
+        setVisible(false);
     }
 }

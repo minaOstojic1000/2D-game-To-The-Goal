@@ -1,6 +1,6 @@
 package gridrunner.gameObjects;
 
-import gridrunner.Constants;
+import gridrunner.constants.Constants;
 import gridrunner.Player;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
@@ -27,7 +27,7 @@ public class Level extends Group {
         this.hearts = new ArrayList<>();
 
         for ( int row = 0; row < map.length; row++ ) {
-            for ( int column = 0; column < map[row].length ( ); column++ ) {
+            for ( int column = 0; column < map[row].length(); column++ ) {
                 double positionX = column * tileSize;
                 double positionY = row * tileSize;
 
@@ -113,7 +113,7 @@ public class Level extends Group {
                         break;
                     }
                     case 'B': {
-                        if (row > 0 && map[column].charAt(row - 1) == 'B')
+                        if (row > 0 && map[row - 1].charAt(column) == 'B')
                             continue;
                         double height = Constants.TILE_SIZE;
                         int tRow = row + 1;

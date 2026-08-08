@@ -6,4 +6,5 @@ module gridrunner {
     exports gridrunner.interfaces;
     exports gridrunner.gameObjects;
     exports gridrunner.infoPanes;
+    exports gridrunner.constants;
 }

@@ -1,5 +1,6 @@
-package gridrunner;
+package gridrunner.constants;
 
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
@@ -8,28 +9,40 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 
 public class Constants {
-    public static final String[] MAP = {
-            "HHH#################",
-            "#S.........B.......#",
-            "#..........B.......#",
-            "#.U.########.......#",
-            "#...#..........R...#",
-            "#...#..............#",
-            "#...########.......#",
-            "#..................#",
-            "#..................#",
-            "#.......########.U.#",
-            "#.......#..........#",
-            "#....R..#..........#",
-            "#.......########...#",
-            "#................G.#",
-            "####################"
-    };
 
     public static final int TILE_SIZE = 40;
 
-    public static final int WINDOW_WIDTH  = Constants.MAP[0].length ( ) * Constants.TILE_SIZE;
-    public static final int WINDOW_HEIGHT = Constants.MAP.length * Constants.TILE_SIZE;
+    public static final DropShadow CYAN_GLOW = new DropShadow() {{
+        setColor(Color.web("#00f0ff"));
+        setRadius(25);
+        setSpread(0.65);
+    }};
+
+    public static final DropShadow GOLD_GLOW = new DropShadow() {{
+        setColor(Color.web("#ffd700"));
+        setRadius(25);
+        setSpread(0.60);
+    }};
+
+    public static final DropShadow GREEN_GLOW = new DropShadow() {{
+        setColor(Color.web("#39ff14"));
+        setRadius(20);
+        setSpread(0.70);
+    }};
+
+    public static final DropShadow RED_GLOW = new DropShadow() {{
+        setColor(Color.web("#ff0033"));
+        setRadius(25);
+        setSpread(0.65);
+    }};
+
+    public static final DropShadow DEFAULT_SHADOW = new DropShadow() {{
+        setColor(Color.rgb(0, 0, 0, 0.6));
+        setRadius(10);
+        setOffsetX(0);
+        setOffsetY(4);
+        setSpread(0.0);
+    }};
 
     public static final Color BACKGROUND_COLOR    = Color.web ( "#c8c8c8" );
     public static final Color START_COLOR         = Color.web ( "#88c8ff" );
@@ -82,4 +95,18 @@ public class Constants {
     public static final Background PANEL_END_GAME_BACKGROUND = new Background(new BackgroundFill(Color.BLACK, null, null));
     public static final String WIN_MSG = "YOU WIN!";
     public static final String LOSE_MSG = "GAME OVER";
+
+    public static final String TIME_FORMAT = "%02d:%02d";
+    public static final String POINTS_FORMAT = "POINTS: %d  ";
+
+    public static final Color DEFAULT_TITLE_COLOR = Color.WHITE;
+    public static final Font DEFAULT_TITLE_FONT = Font.font("Impact", FontWeight.BOLD, FontPosture.REGULAR, 36);
+
+    public static final Color DEFAULT_BUTTON_TEXT_COLOR = Color.WHITE;
+    public static final Color DEFAULT_BUTTON_COLOR = WALL_FILL_COLOR;
+    public static final Color DEFAULT_BUTTON_STROKE = WALL_STROKE_COLOR;
+    public static final DropShadow DEFAULT_BUTTON_HIGHLIGHT = CYAN_GLOW;
+    public static final DropShadow DEFAULT_BUTTON_SHADOW = DEFAULT_SHADOW;
+    public static final Font DEFAULT_BUTTON_FONT = Font.font("Impact", FontWeight.BOLD, 18);
+
 }
