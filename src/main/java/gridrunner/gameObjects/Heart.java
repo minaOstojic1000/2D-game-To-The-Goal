@@ -4,14 +4,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.transform.Translate;
 
-public class PlayerHeart extends Path {
+public class Heart extends Path {
 
-    PlayerHeart(double size, double positionX, double positionY,
-                Color fillColor, Color strokeColor) {
+    Color fillColor;
+
+    public Heart(double size, double positionX, double positionY,
+          Color fillColor, Color strokeColor) {
         makeHeart(size);
         this.getTransforms().add (
                 new Translate(positionX, positionY)
         );
+        this.fillColor = fillColor;
         setFill(fillColor);
         setStroke(strokeColor);
     }
@@ -33,7 +36,8 @@ public class PlayerHeart extends Path {
         );
     }
 
-    public void takeDamage() {
+    public void loseColor() {
         this.setFill(Color.BLACK);
     }
+    public void getColor() { this.setFill(fillColor); }
 }

@@ -60,7 +60,7 @@ public class BlinkingWalls extends Group {
                 wall.setFill(fillColor);
                 wall.setStroke(strokeColor);
                 wall.setStrokeWidth ( oneW * 0.04 );
-                wall.getTransforms ( ).addAll (
+                wall.getTransforms( ).addAll (
                         new Translate ( j * oneW, i * oneH )
                 );
 

@@ -65,8 +65,8 @@ public class Coin extends Circle implements IPowerUp {
 
     @Override
     public void affect(Player player) {
-        IPowerUp.super.affect(player);
-        this.setOpacity(0);
+        player.claimReward(1);
+        this.setVisible(false);
         usedCoins.add(this);
     }
 

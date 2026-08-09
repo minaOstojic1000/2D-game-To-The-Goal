@@ -3,49 +3,56 @@ package gridrunner;
 import gridrunner.constants.Constants;
 import gridrunner.gameObjects.Coin;
 import gridrunner.gameObjects.Level;
+import gridrunner.gameObjects.LifeBooster;
 import gridrunner.infoPanes.AdditionalInformation;
 import gridrunner.infoPanes.EndOfGame;
 import gridrunner.infoPanes.MapChoice;
-import gridrunner.interfaces.ITrigger;
+
 import gridrunner.interfaces.IPickup;
 import javafx.animation.AnimationTimer;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import gridrunner.constants.Maps;
 
 public class GameGenerator {
 
-    Group root;
-    Level level;
-    Player player;
-    AnimationTimer timer;
+    private Group root;
+    private final StackPane rootPane;
+    private Level level;
+    private Player player;
+    private AnimationTimer timer;
 
-    Input input;
-    AdditionalInformation info;
-    EndOfGame endOfGame;
+    private Input input;
+    private AdditionalInformation info;
+    private EndOfGame endOfGame;
 
-    MapChoice mapChoice;
+    private MapChoice mapChoice;
 
-    GameGenerator(Group root, Input input) {
+    GameGenerator(StackPane rootPane, Input input) {
 
-        this.root = root;
+        this.root = new Group();
+        this.rootPane = rootPane;
+        rootPane.setAlignment(Pos.TOP_LEFT);
+        rootPane.getChildren().add(root);
+
         this.input = input;
 
         mapChoice = new MapChoice(Maps.WINDOW_WIDTH, Maps.WINDOW_HEIGHT, 0, 0);
 
-        info = new AdditionalInformation(
-                Maps.WINDOW_WIDTH, Constants.TILE_SIZE, 0, 0
-        );
 
         endOfGame = new EndOfGame(
                 Maps.WINDOW_WIDTH, Maps.WINDOW_HEIGHT, 0, 0
         );
 
-        root.getChildren().addAll(mapChoice);
+        root.getChildren().add(mapChoice);
     }
 
     public void generateGame() {
@@ -67,6 +74,24 @@ public class GameGenerator {
                 Constants.GOAL_COLOR
         );
         this.root.getChildren().add(level);
+        setBackground(mapChoice.getMapBackground());
+    }
+
+    private void setBackground(Image img) {
+        BackgroundImage bckImg = new BackgroundImage(
+                img,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+
+                new BackgroundSize(
+                        BackgroundSize.AUTO, BackgroundSize.AUTO,
+                        false, false,
+                        true,
+                        true
+                )
+        );
+        this.rootPane.setBackground(new Background(bckImg));
     }
 
     private void generatePlayer() {
@@ -74,11 +99,11 @@ public class GameGenerator {
                 Constants.PLAYER_RADIUS,
                 level.getStartX ( ) + Constants.TILE_SIZE / 2. - Constants.PLAYER_RADIUS,
                 level.getStartY ( ) + Constants.TILE_SIZE / 2. - Constants.PLAYER_RADIUS,
+                Constants.PLAYER_SPEED,
                 Constants.PLAYER_FILL_COLOR,
-                Constants.PLAYER_STROKE_COLOR
+                Constants.PLAYER_STROKE_COLOR,
+                Constants.PLAYER_DEFAULT_LIVES
         );
-
-        player.setLifeHearts(level.getHearts());
 
         this.root.getChildren().add(player);
     }
@@ -86,9 +111,19 @@ public class GameGenerator {
     private void setGameTimer(List<Rectangle> playerWalls) {
 
         List<IPickup> pickups = IPickup.getPickups();
+        Random random = new Random();
+        final int numMoments = 10;
+        final double[] nextHeartMoments = new double[numMoments];
+        for (int i = 0; i < numMoments; i++) {
+            nextHeartMoments[i] = random.nextDouble(15);
+        }
 
         timer = new AnimationTimer ( ) {
             private double last;
+            private double timeSlices = 0;
+            private int currMoment = 0;
+            private double momentsSum = 0;
+
             @Override
             public void handle ( long now ) {
                 if ( this.last == 0 ) {
@@ -98,6 +133,8 @@ public class GameGenerator {
                 double dt = ( now - this.last ) / 10e8;
                 this.last = now;
 
+                generateHearts(dt);
+
                 for (IPickup pickup : pickups) {
                     if (pickup.touchesPlayer(player)) {
                         pickup.affect(player);
@@ -105,6 +142,8 @@ public class GameGenerator {
                 }
 
                 Coin.cleanUsed();
+                LifeBooster.cleanExpired();
+
                 info.updateAll(now, player.getPoints());
 
                 if (player.touches(level.getGoal())) {
@@ -116,7 +155,27 @@ public class GameGenerator {
                     endOfGame.show(Constants.LOSE_MSG);
                 }
 
-                player.update ( dt, Constants.PLAYER_SPEED, input, playerWalls );
+                player.update ( dt, input, playerWalls );
+            }
+
+            private void generateHearts(double dt) {
+
+                timeSlices += dt;
+
+                while ((timeSlices - momentsSum) >= nextHeartMoments[currMoment]) {
+
+                    momentsSum += nextHeartMoments[currMoment];
+                    currMoment = (currMoment + 1) % numMoments;
+
+                    LifeBooster life = LifeBooster.generateRandomLifeBooster(
+                            mapChoice.getMap(),
+                            Constants.TILE_SIZE, Constants.TILE_SIZE,
+                            Constants.HEART_SIZE,
+                            Constants.HEART_COLOR, Constants.HEART_STROKE,
+                            Constants.LIFE_BOOSTER_DURATION
+                    );
+                    root.getChildren().add(life);
+                }
             }
         };
     }
@@ -126,7 +185,12 @@ public class GameGenerator {
         List<Rectangle> playerWalls = new ArrayList<>(level.getWalls());
         level.startBlinkingWalls(Constants.BLINKING_WALL_DURATION, playerWalls, player);
 
+        info = new AdditionalInformation(
+                Maps.WINDOW_WIDTH, Constants.TILE_SIZE, 0, 0,
+                player.getNumOfLives()
+        );
         info.show();
+        player.setLifeHearts(info.getHearts());
 
         root.getChildren().addAll(info, endOfGame);
 

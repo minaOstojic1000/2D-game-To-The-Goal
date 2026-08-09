@@ -1,6 +1,6 @@
 package gridrunner;
 
-import gridrunner.gameObjects.PlayerHeart;
+import gridrunner.gameObjects.Heart;
 import javafx.geometry.Bounds;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -14,12 +14,15 @@ public class Player extends Circle {
     private Translate position, startPosition;
     private double centerX, centerY, radius;
     int currLife;
-    List<PlayerHeart> myHearts;
+    List<Heart> myHearts;
     int points = 0;
+    double speed;
 
     public Player ( double radius,
                     double positionX, double positionY,
-                    Color fillColor, Color strokeColor) {
+                    double speed,
+                    Color fillColor, Color strokeColor,
+                    int numOfLives) {
         super ( radius, fillColor );
         super.setStroke ( strokeColor );
         super.setStrokeWidth ( radius * 0.03 );
@@ -27,6 +30,8 @@ public class Player extends Circle {
         this.centerX = positionX + radius;
         this.centerY = positionY + radius;
         this.radius  = radius;
+        this.speed = speed;
+        this.currLife = numOfLives - 1;
 
         this.position = new Translate (this.centerX, this.centerY);
 
@@ -39,14 +44,15 @@ public class Player extends Circle {
 
     public Player ( double radius,
                     double positionX, double positionY,
+                    double speed,
                     Color fillColor, Color strokeColor,
-                    List<PlayerHeart> myHearts) {
-        this(radius, positionX, positionY, fillColor, strokeColor);
+                    List<Heart> myHearts) {
+        this(radius, positionX, positionY, speed, fillColor, strokeColor, myHearts.size());
         this.myHearts = List.copyOf(myHearts);
         currLife = this.myHearts.size() - 1;
     }
 
-    public void update(double dt, double speed, Input input, List<Rectangle> walls) {
+    public void update(double dt, Input input, List<Rectangle> walls) {
         double dx = 0;
         double dy = 0;
 
@@ -146,7 +152,7 @@ public class Player extends Circle {
         return this.getParent().sceneToLocal(rectToScene);
     }
 
-    public void setLifeHearts(List<PlayerHeart> hearts) {
+    public void setLifeHearts(List<Heart> hearts) {
         this.myHearts = List.copyOf(hearts);
         currLife = this.myHearts.size() - 1;
     }
@@ -156,8 +162,17 @@ public class Player extends Circle {
         for (int i = 0; i < numOfLives; i++) {
             if (currLife < 0)
                 return;
-            myHearts.get(currLife).takeDamage();
+            myHearts.get(currLife).loseColor();
             currLife--;
+        }
+    }
+
+    public void addLives(int numOfLives) {
+        for (int i = 0; i < numOfLives; i++) {
+            if (currLife > myHearts.size() - 2)
+                return;
+            myHearts.get(currLife + 1).getColor();
+            currLife++;
         }
     }
 
@@ -170,4 +185,16 @@ public class Player extends Circle {
     }
 
     public int getPoints() { return points; }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public int getNumOfLives() {
+        return currLife + 1;
+    }
 }

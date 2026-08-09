@@ -1,10 +1,17 @@
 package gridrunner.infoPanes;
 
 import gridrunner.constants.Constants;
+import gridrunner.gameObjects.Heart;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.transform.Translate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static javafx.geometry.Pos.CENTER;
 
@@ -12,13 +19,16 @@ public class AdditionalInformation extends StackPane {
 
     private Label timeLabel;
     private Label pointsLabel;
+    private List<Heart> hearts;
     long startTime;
 
-    public AdditionalInformation(double paneWidth, double paneHeight, double paneX, double paneY) {
+    public AdditionalInformation(double paneWidth, double paneHeight, double paneX, double paneY, int numHearts) {
 
         super();
 
         setLabels();
+
+        setPlayerHearts(numHearts);
 
         this.setPrefSize(paneWidth, paneHeight);
 
@@ -46,6 +56,30 @@ public class AdditionalInformation extends StackPane {
         this.getChildren().addAll(timeLabel, pointsLabel);
     }
 
+    private void setPlayerHearts(int num) {
+
+        HBox heartsBox = new HBox(1.0 / 4 * Constants.TILE_SIZE);
+        heartsBox.setPadding(new Insets(0.1 * Constants.TILE_SIZE));
+        heartsBox.setPrefWidth(Region.USE_COMPUTED_SIZE);
+        heartsBox.setPrefHeight(Constants.TILE_SIZE);
+
+        hearts = new ArrayList<>();
+        for (int i = 0; i < num; i++) {
+            Heart heart = new Heart(
+                    Constants.HEART_SIZE,
+                    0, 0,
+                    Constants.HEART_COLOR,
+                    Constants.HEART_STROKE
+            );
+            hearts.add(heart);
+        }
+
+        heartsBox.getChildren().addAll(hearts);
+        heartsBox.setAlignment(Pos.CENTER_LEFT);
+        setAlignment(heartsBox, Pos.CENTER_LEFT);
+
+        this.getChildren().add(heartsBox);
+    }
 
     public void updateTimeLabel(long now) {
         if (startTime == 0)
@@ -79,5 +113,9 @@ public class AdditionalInformation extends StackPane {
 
     public void hide() {
         setVisible(false);
+    }
+
+    public List<Heart> getHearts() {
+        return hearts;
     }
 }

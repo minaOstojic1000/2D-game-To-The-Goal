@@ -18,13 +18,11 @@ public class Level extends Group {
     public double startX, startY;
     private Rectangle start;
     private List<BlinkingWalls> blinkingWallsList;
-    private List<PlayerHeart> hearts;
     private List<Coin> coins;
 
     public Level ( String map[], double tileSize, Color wallFillColor, Color wallStrokeColor, Color startColor, Color goalColor ) {
         this.walls = new ArrayList<> ( );
         this.blinkingWallsList = new ArrayList<>();
-        this.hearts = new ArrayList<>();
 
         for ( int row = 0; row < map.length; row++ ) {
             for ( int column = 0; column < map[row].length(); column++ ) {
@@ -32,7 +30,7 @@ public class Level extends Group {
                 double positionY = row * tileSize;
 
                 switch ( map[row].charAt( column ) ) {
-                    case 'H', '#': {
+                    case '#': {
                         Rectangle wall = new Rectangle ( tileSize, tileSize );
                         wall.getTransforms ( ).addAll (
                                 new Translate ( positionX, positionY )
@@ -44,18 +42,6 @@ public class Level extends Group {
                         this.walls.add ( wall );
 
                         super.getChildren ( ).add ( wall );
-
-                        if (map[row].charAt( column ) == 'H') {
-                            PlayerHeart heart = new PlayerHeart(
-                                    Constants.HEART_SIZE,
-                                    (column + 1.0/2) * Constants.TILE_SIZE,
-                                    (row + 1.0/2) * Constants.TILE_SIZE,
-                                    Constants.HEART_COLOR,
-                                    Constants.HEART_STROKE
-                            );
-                            hearts.add(heart);
-                            this.getChildren().add(heart);
-                        }
 
                         break;
                     }
@@ -113,22 +99,15 @@ public class Level extends Group {
                         break;
                     }
                     case 'B': {
-                        if (row > 0 && map[row - 1].charAt(column) == 'B')
+
+                        double height = getCFigureHeight(map, row, column, 'B');
+                        if (height < 0)
                             continue;
-                        double height = Constants.TILE_SIZE;
-                        int tRow = row + 1;
-                        while (tRow < map.length && map[tRow].charAt(column) == 'B') {
-                            height += Constants.TILE_SIZE;
-                            tRow++;
-                        }
-                        if (column > 0 && map[row].charAt(column - 1) == 'B')
+
+                        double width = getCFigureWidth(map, row, column, 'B');
+                        if (width < 0)
                             continue;
-                        double width = Constants.TILE_SIZE;
-                        int tCol = column + 1;
-                        while (tCol < map[row].length() && map[row].charAt(tCol) == 'B') {
-                            width += Constants.TILE_SIZE;
-                            tCol++;
-                        }
+
                         BlinkingWalls blinkingWalls = new BlinkingWalls(
                                 width,
                                 height,
@@ -142,6 +121,26 @@ public class Level extends Group {
                         );
                         this.getChildren().add(blinkingWalls);
                         this.blinkingWallsList.add(blinkingWalls);
+                        break;
+                    }
+                    case 'A', 'D': {
+
+                        double height = getCFigureHeight(map, row, column, map[row].charAt(column));
+                        if (height < 0)
+                            continue;
+
+                        double width = getCFigureWidth(map, row, column, map[row].charAt(column));
+                        if (width < 0)
+                            continue;
+                        double acceleration = Constants.DEFAULT_ACCELERATION;
+                        if (map[row].charAt(column) == 'D')
+                            acceleration = 1.0 / acceleration;
+                        ChangeSpeedEnemy changeSpeedEnemy = new ChangeSpeedEnemy(
+                                width, height,
+                                positionX, positionY,
+                                acceleration
+                        );
+                        this.getChildren().add(changeSpeedEnemy);
                         break;
                     }
                 }
@@ -167,7 +166,27 @@ public class Level extends Group {
         }
     }
 
-    public List<PlayerHeart> getHearts() {
-        return hearts;
+    private double getCFigureWidth(String[] map, int row, int column, char c) {
+        if (column > 0 && map[row].charAt(column - 1) == c)
+            return -1;
+        double width = Constants.TILE_SIZE;
+        int tCol = column + 1;
+        while (tCol < map[row].length() && map[row].charAt(tCol) == c) {
+            width += Constants.TILE_SIZE;
+            tCol++;
+        }
+        return width;
+    }
+
+    private double getCFigureHeight(String[] map, int row, int column, char c) {
+        if (row > 0 && map[row - 1].charAt(column) == c)
+            return -1;
+        double height = Constants.TILE_SIZE;
+        int tRow = row + 1;
+        while (tRow < map.length && map[tRow].charAt(column) == c) {
+            height += Constants.TILE_SIZE;
+            tRow++;
+        }
+        return height;
     }
 }

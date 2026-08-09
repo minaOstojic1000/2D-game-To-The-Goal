@@ -22,7 +22,7 @@ public class MapChoice extends StackPane implements ITrigger {
     HBox titleBox, buttonBox;
     VBox mainBox;
     List<ImageView> mapImages;
-    int selectedMap;
+    int selectedMap = -1;
 
     public MapChoice(double width, double height, double x, double y) {
 
@@ -81,6 +81,7 @@ public class MapChoice extends StackPane implements ITrigger {
         confirm.setBorder(Border.stroke(Maps.MAP_CHOICE_CONFIRM_BUTTON_STROKE));
         confirm.setAlignment(Pos.CENTER);
         confirm.setEffect(Maps.MAP_CHOICE_CONFIRM_BUTTON_SHADOW);
+        confirm.setDisable(true);
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.getChildren().add(confirm);
 
@@ -92,23 +93,27 @@ public class MapChoice extends StackPane implements ITrigger {
     }
 
     private void setHandlers() {
+        final int[] selectedI = {-1};
+        final ImageView[] prevMap = {null};
         for (int i = 0; i < mapImages.size(); i++) {
             ImageView map = mapImages.get(i);
-            int selectedI = i;
+            selectedI[0] = i;
             map.setOnMouseClicked(
                     event -> {
-                        selectedMap = selectedI;
-                        highlightMapImg(map);
+                        selectedMap = mapImages.indexOf(map);
+                        highlightMapImg(prevMap[0], map, true);
+                        confirm.setDisable(false);
+                        prevMap[0] = map;
                     }
             );
             map.setOnMouseEntered(
                     event -> {
-                        highlightMapImg(map);
+                        highlightMapImg(prevMap[0], map, false);
                     }
             );
             map.setOnMouseExited(
                     event -> {
-                        unhighlightMapImg(map);
+                        unhighlightMapImg(prevMap[0], map);
                     }
             );
         }
@@ -130,16 +135,30 @@ public class MapChoice extends StackPane implements ITrigger {
         );
     }
 
-    private void highlightMapImg(ImageView map) {
-        map.setEffect(Maps.HIGHLIGHT_MAP_IMG_SHADOW);
+    private void highlightMapImg(ImageView prevMap, ImageView map, boolean selected) {
+        if (!selected)
+            map.setEffect(Maps.HIGHLIGHT_MAP_IMG_SHADOW);
+        else {
+            map.setEffect(Maps.SELECTED_MAP_IMG_SHADOW);
+
+            if (prevMap != null)
+                unhighlightMapImg(null, prevMap);
+        }
     }
 
-    private void unhighlightMapImg(ImageView map) {
-        map.setEffect(Maps.DEFAULT_MAP_IMG_SHADOW);
+    private void unhighlightMapImg(ImageView prevMap, ImageView map) {
+        if (map == prevMap)
+            map.setEffect(Maps.SELECTED_MAP_IMG_SHADOW);
+        else
+            map.setEffect(Maps.DEFAULT_MAP_IMG_SHADOW);
     }
 
     public String[] getMap() {
         return Maps.MAPS[selectedMap];
+    }
+
+    public Image getMapBackground() {
+        return Maps.MAP_BACKGROUNDS_IMAGE[selectedMap];
     }
 
     public void show() {

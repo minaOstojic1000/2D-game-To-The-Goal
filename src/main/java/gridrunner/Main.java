@@ -10,8 +10,10 @@ import gridrunner.infoPanes.MapChoice;
 import gridrunner.interfaces.IPickup;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -22,7 +24,8 @@ public class Main extends Application {
 
     @Override
     public void start ( Stage stage ) {
-        Group root = new Group ( );
+
+        StackPane root = new StackPane();
 
         Input input = new Input();
 

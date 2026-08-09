@@ -8,9 +8,7 @@ import java.util.List;
 public interface IPowerUp extends IPickup {
     List<IPowerUp> powerUps = new ArrayList<>();
 
-    default void affect(Player player) {
-        player.claimReward(1);
-    }
+    void affect(Player player);
 
     static List<IPowerUp> getPowerUps() {
         return powerUps;
