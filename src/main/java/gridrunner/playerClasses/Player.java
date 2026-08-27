@@ -161,6 +161,8 @@ public abstract class Player extends Group {
 
     public int getCurrLife() { return currLife; }
 
+    public int getRestLives() { return currLife + 1; }
+
     public List<Heart> getMyHearts() { return myHearts; }
 
     public void setLifeHearts(List<Heart> hearts) {

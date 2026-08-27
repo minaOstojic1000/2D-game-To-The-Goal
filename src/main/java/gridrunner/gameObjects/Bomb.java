@@ -81,6 +81,6 @@ public class Bomb extends Circle implements IEnemy {
 
     @Override
     public void affect(Player player) {
-        IEnemy.super.affect(player);
+        player.takeDamage(player.getRestLives());
     }
 }
