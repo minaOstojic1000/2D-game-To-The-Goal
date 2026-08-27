@@ -1,9 +1,11 @@
 package gridrunner.gameObjects;
 
-import gridrunner.Player;
 import gridrunner.interfaces.IPowerUp;
+import gridrunner.playerClasses.Player;
+import javafx.geometry.Bounds;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Shape;
 import javafx.scene.transform.Translate;
 
 import javafx.geometry.Point2D;
@@ -52,15 +54,23 @@ public class Coin extends Circle implements IPowerUp {
         }
         return coins;
     }
-
+    /*
     @Override
     public boolean touchesPlayer(Player player) {
+
+        Bounds playerToScene = player.localToScene(player.getBoundsInLocal());
+        Bounds playerBounds = this.getParent().sceneToLocal(playerToScene);
 
         Point2D positionOfCoin = this.localToScene(this.getCenterX(), this.getCenterY());
         Point2D positionOfPlayer = player.localToScene(player.getCenterX(), player.getCenterY());
 
         double distance = positionOfCoin.distance(positionOfPlayer);
-        return distance <= this.getRadius() + player.getRadius();
+        return distance <= this.getRadius() + playerBounds.getWidth() / 2.0;
+    }
+    */
+    @Override
+    public List<Shape> getShapes() {
+        return List.of(this);
     }
 
     @Override

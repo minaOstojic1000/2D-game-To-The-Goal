@@ -1,8 +1,7 @@
 package gridrunner.gameObjects;
 
-import gridrunner.Player;
 import gridrunner.interfaces.IPowerUp;
-import javafx.animation.AnimationTimer;
+import gridrunner.playerClasses.Player;
 import javafx.animation.PauseTransition;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
@@ -51,16 +50,6 @@ public class LifeBooster extends Heart implements IPowerUp {
         return life;
     }
 
-    @Override
-    public boolean touchesPlayer(Player player) {
-        Shape intersect = Shape.intersect(this, player);
-        if (intersect.getBoundsInLocal().getWidth() != -1 ||
-                intersect.getBoundsInLocal().getWidth() != -1) {
-            return true;
-        }
-        return false;
-    }
-
     private void setMyTimer(double seconds) {
         myTimer = new PauseTransition(Duration.seconds(seconds));
 
@@ -75,6 +64,11 @@ public class LifeBooster extends Heart implements IPowerUp {
         player.addLives(1);
         this.setVisible(false);
         expiredHearts.add(this);
+    }
+
+    @Override
+    public List<Shape> getShapes() {
+        return List.of(this);
     }
 
     public static void cleanExpired() {

@@ -1,6 +1,6 @@
 package gridrunner.gameObjects;
 
-import gridrunner.Player;
+import gridrunner.playerClasses.CirclePlayer;
 import gridrunner.interfaces.IEnemy;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
@@ -11,6 +11,8 @@ import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.util.Duration;
+
+import java.util.List;
 
 public class RotatingEnemy extends Group implements IEnemy {
 
@@ -72,13 +74,7 @@ public class RotatingEnemy extends Group implements IEnemy {
     }
 
     @Override
-    public boolean touchesPlayer(Player player) {
-        Shape intersectA = Shape.intersect(axle, player);
-        Shape intersectS = Shape.intersect(stick, player);
-        if (intersectA.getBoundsInLocal().getWidth() != -1 ||
-                intersectS.getBoundsInLocal().getWidth() != -1) {
-            return true;
-        }
-        return false;
+    public List<Shape> getShapes() {
+        return List.of(axle, stick);
     }
 }

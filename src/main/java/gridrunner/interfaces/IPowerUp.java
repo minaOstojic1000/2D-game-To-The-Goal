@@ -1,6 +1,6 @@
 package gridrunner.interfaces;
 
-import gridrunner.Player;
+import gridrunner.playerClasses.Player;
 
 import java.util.ArrayList;
 import java.util.List;

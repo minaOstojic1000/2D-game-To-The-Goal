@@ -1,9 +1,14 @@
 package gridrunner.gameObjects;
 
-import gridrunner.Player;
+import gridrunner.interfaces.IPickup;
+import gridrunner.playerClasses.CirclePlayer;
 import gridrunner.constants.Constants;
 import gridrunner.interfaces.IEnemy;
+import gridrunner.playerClasses.Player;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
+
+import java.util.List;
 
 public class ChangeSpeedEnemy extends Rectangle implements IEnemy {
 
@@ -36,7 +41,7 @@ public class ChangeSpeedEnemy extends Rectangle implements IEnemy {
     @Override
     public boolean touchesPlayer(Player player) {
 
-        boolean touches = player.overlaps(this);
+        boolean touches = IEnemy.super.touchesPlayer(player);
 
         if (!touches && affected) {
             affected = false;
@@ -44,6 +49,11 @@ public class ChangeSpeedEnemy extends Rectangle implements IEnemy {
         }
 
         return touches;
+    }
+
+    @Override
+    public List<Shape> getShapes() {
+        return List.of(this);
     }
 
     @Override

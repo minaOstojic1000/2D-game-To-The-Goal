@@ -1,12 +1,16 @@
 package gridrunner.gameObjects;
 
-import gridrunner.Player;
+import gridrunner.playerClasses.CirclePlayer;
 import gridrunner.interfaces.IEnemy;
+import gridrunner.playerClasses.Player;
 import javafx.animation.TranslateTransition;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.transform.Translate;
 import javafx.util.Duration;
+
+import java.util.List;
 
 public class UpDownEnemy extends Rectangle implements IEnemy {
 
@@ -81,7 +85,7 @@ public class UpDownEnemy extends Rectangle implements IEnemy {
     }
 
     @Override
-    public boolean touchesPlayer(Player player) {
-        return player.overlaps(this);
+    public List<Shape> getShapes() {
+        return List.of(this);
     }
 }

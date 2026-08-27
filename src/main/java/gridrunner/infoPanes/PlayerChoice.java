@@ -1,31 +1,30 @@
 package gridrunner.infoPanes;
 
 import gridrunner.constants.Maps;
-import gridrunner.interfaces.ITrigger;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import gridrunner.constants.PlayersFeatures;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.transform.Translate;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-public class MapChoice extends ChoicePane {
+public class PlayerChoice extends ChoicePane{
 
-
-    public MapChoice(double width, double height, double x, double y) {
+    public PlayerChoice(double width, double height, double x, double y) {
         super(width, height, x, y);
     }
 
+    public int getSelectedPlayerNum() {
+        return selectedChoice;
+    }
+
+    @Override
     protected void setImages() {
-        for (int i = 0; i < Maps.MAPS.length; i++) {
+        for (int i = 0; i < PlayersFeatures.PLAYERS.length; i++) {
             ImageView imgView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/gridrunner/puppy.jpg"))));
             choiceImages.add(imgView);
             imgView.setFitWidth(200);
@@ -33,92 +32,83 @@ public class MapChoice extends ChoicePane {
         }
     }
 
-    public String[] getMap() {
-        return Maps.MAPS[selectedChoice];
-    }
-
-    public Image getMapBackground() {
-        return Maps.MAP_BACKGROUNDS_IMAGE[selectedChoice];
-    }
-
     @Override
     protected DropShadow getSelectedImgShadow() {
-        return Maps.SELECTED_MAP_IMG_SHADOW;
+        return PlayersFeatures.SELECTED_PLAYER_IMG_SHADOW;
     }
 
     @Override
     protected DropShadow getDefaultImgShadow() {
-        return Maps.DEFAULT_MAP_IMG_SHADOW;
+        return PlayersFeatures.DEFAULT_PLAYER_IMG_SHADOW;
     }
 
     @Override
     protected DropShadow getHighlightImgShadow() {
-        return Maps.HIGHLIGHT_MAP_IMG_SHADOW;
+        return PlayersFeatures.HIGHLIGHT_PLAYER_IMG_SHADOW;
     }
 
     @Override
     protected String getTitle() {
-        return Maps.MAP_CHOICE_TITLE;
+        return PlayersFeatures.PLAYER_CHOICE_TITLE;
     }
 
     @Override
     protected Color getTitleColor() {
-        return Maps.MAP_CHOICE_TITLE_COLOR;
+        return PlayersFeatures.PLAYER_CHOICE_TITLE_COLOR;
     }
 
     @Override
     protected Color getTitleBoxColor() {
-        return Maps.MAP_CHOICE_CONFIRM_BUTTON_COLOR;
+        return PlayersFeatures.PLAYER_CHOICE_CONFIRM_BUTTON_COLOR;
     }
 
     @Override
     protected Font getTitleFont() {
-        return Maps.MAP_CHOICE_TITLE_FONT;
+        return PlayersFeatures.PLAYER_CHOICE_TITLE_FONT;
     }
 
     @Override
     protected Color getConfirmButtonColor() {
-        return Maps.MAP_CHOICE_CONFIRM_BUTTON_COLOR;
+        return PlayersFeatures.PLAYER_CHOICE_CONFIRM_BUTTON_COLOR;
     }
 
     @Override
     protected String getConfirmButtonText() {
-        return Maps.MAP_CHOICE_CONFIRM_BUTTON_TEXT;
+        return PlayersFeatures.PLAYER_CHOICE_CONFIRM_BUTTON_TEXT;
     }
 
     @Override
     protected Color getConfirmButtonTextColor() {
-        return Maps.MAP_CHOICE_CONFIRM_BUTTON_TEXT_COLOR;
+        return PlayersFeatures.PLAYER_CHOICE_CONFIRM_BUTTON_TEXT_COLOR;
     }
 
     @Override
     protected Font getConfirmButtonTextFont() {
-        return Maps.MAP_CHOICE_CONFIRM_BUTTON_FONT;
+        return PlayersFeatures.PLAYER_CHOICE_CONFIRM_BUTTON_FONT;
     }
 
     @Override
     protected Color getConfirmButtonStroke() {
-        return Maps.MAP_CHOICE_CONFIRM_BUTTON_STROKE;
+        return PlayersFeatures.PLAYER_CHOICE_CONFIRM_BUTTON_STROKE;
     }
 
     @Override
     protected DropShadow getConfirmButtonShadow() {
-        return Maps.MAP_CHOICE_CONFIRM_BUTTON_SHADOW;
+        return PlayersFeatures.PLAYER_CHOICE_CONFIRM_BUTTON_SHADOW;
     }
 
     @Override
     protected Background getPaneBackground() {
-        return Maps.MAP_CHOICE_BACKGROUND;
+        return PlayersFeatures.PLAYER_CHOICE_BACKGROUND;
     }
 
     @Override
     protected GridPane createCentralImgPane(double width, double height) {
         GridPane pane = new GridPane(width * 0.03, height * 0.03);
-        for (int i = 0; i < choiceImages.size() / 2; i++) {
-            for (int j = 0; j < 2; j++) {
-                pane.add(choiceImages.get(i * 2 + j), i, j);
-            }
+        for (int i = 0; i < choiceImages.size(); i++) {
+            pane.add(choiceImages.get(i), i, 0);
         }
         return pane;
     }
+
 }

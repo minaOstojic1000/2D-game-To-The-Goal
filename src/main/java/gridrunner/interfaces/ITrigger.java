@@ -5,20 +5,15 @@ import java.util.List;
 
 public interface ITrigger {
 
-    List<ITargetAction> actions = new ArrayList<>();
-
     default void trigger() {
-        for (ITargetAction action : actions) {
+        for (ITargetAction action : getActions()) {
             action.execute();
         }
     }
 
-    default void addAction(ITargetAction action) {
-        actions.add(action);
-    }
+    void addAction(ITargetAction action);
 
-    default void removeAction(ITargetAction action) {
-        actions.remove(action);
-    }
+    void removeAction(ITargetAction action);
 
+    List<ITargetAction> getActions();
 }

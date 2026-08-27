@@ -1,14 +1,21 @@
 package gridrunner;
 
 import gridrunner.constants.Constants;
+import gridrunner.constants.PlayersFeatures;
 import gridrunner.gameObjects.Coin;
 import gridrunner.gameObjects.Level;
 import gridrunner.gameObjects.LifeBooster;
+import gridrunner.gameObjects.Shield;
 import gridrunner.infoPanes.AdditionalInformation;
 import gridrunner.infoPanes.EndOfGame;
 import gridrunner.infoPanes.MapChoice;
 
+import gridrunner.infoPanes.PlayerChoice;
 import gridrunner.interfaces.IPickup;
+import gridrunner.playerClasses.CirclePlayer;
+import gridrunner.playerClasses.Player;
+import gridrunner.playerClasses.TankPlayer;
+import gridrunner.playerClasses.ThornyCirclePlayer;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -24,17 +31,18 @@ import gridrunner.constants.Maps;
 
 public class GameGenerator {
 
-    private Group root;
+    private final Group root;
     private final StackPane rootPane;
     private Level level;
     private Player player;
     private AnimationTimer timer;
 
-    private Input input;
+    private final Input input;
     private AdditionalInformation info;
-    private EndOfGame endOfGame;
+    private final EndOfGame endOfGame;
 
-    private MapChoice mapChoice;
+    private final MapChoice mapChoice;
+    private final PlayerChoice playerChoice;
 
     GameGenerator(StackPane rootPane, Input input) {
 
@@ -47,19 +55,21 @@ public class GameGenerator {
 
         mapChoice = new MapChoice(Maps.WINDOW_WIDTH, Maps.WINDOW_HEIGHT, 0, 0);
 
+        playerChoice = new PlayerChoice(Maps.WINDOW_WIDTH, Maps.WINDOW_HEIGHT, 0, 0);
 
         endOfGame = new EndOfGame(
                 Maps.WINDOW_WIDTH, Maps.WINDOW_HEIGHT, 0, 0
         );
 
         root.getChildren().add(mapChoice);
+        root.getChildren().add(playerChoice);
     }
 
     public void generateGame() {
-
         mapChoice.addAction(this::generateLevel);
-        mapChoice.addAction(this::generatePlayer);
-        mapChoice.addAction(this::startGame);
+        mapChoice.addAction(this::openPlayerChoice);
+        playerChoice.addAction(this::generatePlayer);
+        playerChoice.addAction(this::startGame);
 
         mapChoice.show();
     }
@@ -73,6 +83,7 @@ public class GameGenerator {
                 Constants.START_COLOR,
                 Constants.GOAL_COLOR
         );
+        this.level.setVisible(false);
         this.root.getChildren().add(level);
         setBackground(mapChoice.getMapBackground());
     }
@@ -94,17 +105,19 @@ public class GameGenerator {
         this.rootPane.setBackground(new Background(bckImg));
     }
 
-    private void generatePlayer() {
-        this.player = new Player (
-                Constants.PLAYER_RADIUS,
-                level.getStartX ( ) + Constants.TILE_SIZE / 2. - Constants.PLAYER_RADIUS,
-                level.getStartY ( ) + Constants.TILE_SIZE / 2. - Constants.PLAYER_RADIUS,
-                Constants.PLAYER_SPEED,
-                Constants.PLAYER_FILL_COLOR,
-                Constants.PLAYER_STROKE_COLOR,
-                Constants.PLAYER_DEFAULT_LIVES
-        );
+    private void openPlayerChoice() {
+        playerChoice.show();
+    }
 
+    private void generatePlayer() {
+
+        int selectedPlayerNum = playerChoice.getSelectedPlayerNum();
+
+        this.player = Player.createPlayer(
+                selectedPlayerNum,
+                level.startX + Constants.TILE_SIZE / 2.,
+                level.startY + Constants.TILE_SIZE / 2.
+        );
         this.root.getChildren().add(player);
     }
 
@@ -114,15 +127,18 @@ public class GameGenerator {
         Random random = new Random();
         final int numMoments = 10;
         final double[] nextHeartMoments = new double[numMoments];
+        final double[] nextShieldMoments = new double[numMoments];
         for (int i = 0; i < numMoments; i++) {
             nextHeartMoments[i] = random.nextDouble(15);
+            nextShieldMoments[i] = random.nextDouble(30);
         }
+
 
         timer = new AnimationTimer ( ) {
             private double last;
             private double timeSlices = 0;
-            private int currMoment = 0;
-            private double momentsSum = 0;
+            private int currMomentH = 0, currMomentS;
+            private double momentsSumH = 0, momentsSumS = 0;
 
             @Override
             public void handle ( long now ) {
@@ -133,7 +149,9 @@ public class GameGenerator {
                 double dt = ( now - this.last ) / 10e8;
                 this.last = now;
 
+                timeSlices += dt;
                 generateHearts(dt);
+                generateShields(dt);
 
                 for (IPickup pickup : pickups) {
                     if (pickup.touchesPlayer(player)) {
@@ -143,6 +161,7 @@ public class GameGenerator {
 
                 Coin.cleanUsed();
                 LifeBooster.cleanExpired();
+                Shield.cleanExpired();
 
                 info.updateAll(now, player.getPoints());
 
@@ -160,12 +179,10 @@ public class GameGenerator {
 
             private void generateHearts(double dt) {
 
-                timeSlices += dt;
+                while ((timeSlices - momentsSumH) >= nextHeartMoments[currMomentH]) {
 
-                while ((timeSlices - momentsSum) >= nextHeartMoments[currMoment]) {
-
-                    momentsSum += nextHeartMoments[currMoment];
-                    currMoment = (currMoment + 1) % numMoments;
+                    momentsSumH += nextHeartMoments[currMomentH];
+                    currMomentH = (currMomentH + 1) % numMoments;
 
                     LifeBooster life = LifeBooster.generateRandomLifeBooster(
                             mapChoice.getMap(),
@@ -175,6 +192,25 @@ public class GameGenerator {
                             Constants.LIFE_BOOSTER_DURATION
                     );
                     root.getChildren().add(life);
+                }
+            }
+
+            private void generateShields(double dt) {
+
+                while ((timeSlices - momentsSumS) >= nextShieldMoments[currMomentS]) {
+
+                    momentsSumS += nextShieldMoments[currMomentS];
+                    currMomentS = (currMomentS + 1) % numMoments;
+
+                    Shield shield = Shield.generateRandomShields(
+                            mapChoice.getMap(),
+                            Constants.TILE_SIZE, Constants.TILE_SIZE,
+                            Constants.SHIELD_WIDTH,
+                            Constants.SHIELD_FILL, Constants.SHIELD_STROKE,
+                            Constants.IMMUNITY_DURATION,
+                            Constants.SHIELD_DURATION
+                    );
+                    root.getChildren().add(shield);
                 }
             }
         };
@@ -195,6 +231,7 @@ public class GameGenerator {
         root.getChildren().addAll(info, endOfGame);
 
         setGameTimer(playerWalls);
+        level.setVisible(true);
         timer.start();
     }
 

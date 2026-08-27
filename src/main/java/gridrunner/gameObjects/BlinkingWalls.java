@@ -1,6 +1,6 @@
 package gridrunner.gameObjects;
 
-import gridrunner.Player;
+import gridrunner.playerClasses.Player;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -104,7 +104,7 @@ public class BlinkingWalls extends Group {
 
         double playerX = playerBounds.getCenterX();
         double playerY = playerBounds.getCenterY();
-        double playerRadius = player.getRadius();
+        double playerRadius = playerBounds.getWidth() / 2.0;
 
         double left = startX;
         double up = startY;

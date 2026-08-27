@@ -18,18 +18,12 @@ public class Constants {
     public static final Color GOAL_COLOR          = Color.web ( "#44dd88" );
     public static final Color WALL_FILL_COLOR     = Color.web ( "#334466" );
     public static final Color WALL_STROKE_COLOR   = Color.web ( "#223355" );
-    public static final Color PLAYER_FILL_COLOR   = Color.web ( "#2255cc" );
-    public static final Color PLAYER_STROKE_COLOR = Color.web ( "#1133aa" );
 
     public static final Color BLINKING_WALL_COLOR = Color.YELLOW;
     public static final Color BLINKING_WALL_STROKE = Color.DARKORANGE;
     public static final double BLINKING_WALL_DURATION = 2;
     public static final double BLINKING_WALL_UNIT_WIDTH = TILE_SIZE;
     public static final double BLINKING_WALL_UNIT_HEIGHT = TILE_SIZE;
-
-    public static final double PLAYER_RADIUS = TILE_SIZE * 0.75 / 2;
-    public static final double PLAYER_SPEED  = 180; // pixels per second
-    public static final int PLAYER_DEFAULT_LIVES  = 3; // pixels per second
 
     public static final double UP_DOWN_ENEMY_WIDTH = TILE_SIZE;
     public static final double UP_DOWN_ENEMY_HEIGHT = TILE_SIZE;
@@ -86,6 +80,22 @@ public class Constants {
     public static final Color SUNKEN_FILL_COLOR = Color.rgb(0, 0, 0, 0.08);
     public static final Color SUNKEN_STROKE_COLOR = Color.rgb(0, 0, 0, 0.15);
     public static final double SUNKEN_STROKE_WIDTH = 2;
+
+    public static final double IMMUNITY_DURATION = 3;
+    public static final double SHIELD_DURATION = 5;
+    public static final double SHIELD_WIDTH = TILE_SIZE * 0.75;
+    public static final Color SHIELD_FILL = Color.LIGHTBLUE;
+    public static final Color SHIELD_STROKE = Color.DARKBLUE;
+
+    public static final double FLIGHT_BOMB_DURATION = 1;
+    public static final double PAUSE_BOMB_DURATION = 5;
+    public static final double BOMB_RADIUS = TILE_SIZE * 0.1;
+    public static final double BOMB_FLIGHT_XD = TILE_SIZE * 3;
+    public static final Color BOMB_FILL = Color.ORANGERED;
+    public static final Color BOMB_STROKE = Color.DARKRED;
+
+    public static final Color TOP_TOWER_FILL = Color.SADDLEBROWN;
+    public static final Color TOP_TOWER_STROKE = Color.BLACK;
 
     public static final DropShadow STRONG_BASE_SHADOW = new DropShadow() {{
         setColor(Color.rgb(0, 0, 0, 0.95));

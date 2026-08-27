@@ -1,7 +1,7 @@
 package gridrunner.gameObjects;
 
 import gridrunner.constants.Constants;
-import gridrunner.Player;
+import gridrunner.playerClasses.Player;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -141,6 +141,19 @@ public class Level extends Group {
                                 acceleration
                         );
                         this.getChildren().add(changeSpeedEnemy);
+                        break;
+                    }
+                    case 'T' : {
+                        TopTower topTower = new TopTower(
+                                Constants.TILE_SIZE,
+                                Constants.TILE_SIZE,
+                                positionX,
+                                positionY,
+                                Constants.TOP_TOWER_FILL,
+                                Constants.TOP_TOWER_STROKE,
+                                walls
+                        );
+                        this.getChildren().addAll(topTower, topTower.getBomb());
                         break;
                     }
                 }
