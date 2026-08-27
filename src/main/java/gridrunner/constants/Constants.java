@@ -90,12 +90,12 @@ public class Constants {
     public static final double FLIGHT_BOMB_DURATION = 1;
     public static final double PAUSE_BOMB_DURATION = 5;
     public static final double BOMB_RADIUS = TILE_SIZE * 0.1;
-    public static final double BOMB_FLIGHT_XD = TILE_SIZE * 3;
     public static final Color BOMB_FILL = Color.ORANGERED;
     public static final Color BOMB_STROKE = Color.DARKRED;
 
     public static final Color TOP_TOWER_FILL = Color.SADDLEBROWN;
     public static final Color TOP_TOWER_STROKE = Color.BLACK;
+    public static final int NUM_OF_BOMBS = 3;
 
     public static final DropShadow STRONG_BASE_SHADOW = new DropShadow() {{
         setColor(Color.rgb(0, 0, 0, 0.95));

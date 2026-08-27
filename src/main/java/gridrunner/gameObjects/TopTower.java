@@ -6,34 +6,59 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class TopTower extends Rectangle {
 
-    private Bomb bomb;
+    private List<Bomb> bombs;
+    private double bombX, bombY;
 
     TopTower(double width, double height, double positionX, double positionY,
-             Color fillColor, Color strokeColor, List<Rectangle> walls) {
+             Color fillColor, Color strokeColor, List<Rectangle> walls,
+             int numOfBombs,
+             double bombRadius, int bombMinFlightXD, int bombMaxFlightXD, boolean right,
+             double bombFlightDuration, double bombPauseDuration, Color bombFill, Color bombStroke) {
         super(positionX, positionY, width, height);
         this.setFill(fillColor);
         this.setStroke(strokeColor);
+        this.bombX = positionX + width / 2.;
+        this.bombY = positionY + width / 2.;
 
-        bomb = new Bomb(
-                Constants.BOMB_RADIUS,
-                positionX, positionY,
-                positionX - Constants.BOMB_FLIGHT_XD,
-                positionY,
-                Constants.FLIGHT_BOMB_DURATION,
-                Constants.PAUSE_BOMB_DURATION,
-                Constants.BOMB_FILL,
-                Constants.BOMB_STROKE
-        );
+        bombs = new ArrayList<>();
+        createBombs(numOfBombs, bombRadius,
+                bombMinFlightXD, bombMaxFlightXD, right,
+                bombFlightDuration, bombPauseDuration,
+                bombFill, bombStroke);
 
         if (walls == null)
             walls = new ArrayList<>();
         walls.add(this);
     }
 
-    public Bomb getBomb() {
-        return bomb;
+    private void createBombs(int numOfBombs, double bombRadius, int bombMinFlightXD, int bombMaxFlightXD, boolean right,
+                             double bombFlightDuration, double bombPauseDuration, Color bombFill, Color bombStroke) {
+        Random rnd = new Random();
+
+        int dir = (right) ? 1 : -1;
+
+        for (int i = 0; i < numOfBombs; i++) {
+            bombs.add(
+                    new Bomb(
+                            bombRadius,
+                            bombX, bombY,
+                            bombX + dir * (rnd.nextInt((bombMaxFlightXD - bombMinFlightXD) + 1) + bombMinFlightXD),
+                            bombY,
+                            bombFlightDuration,
+                            bombPauseDuration * numOfBombs,
+                            bombPauseDuration * i,
+                            bombFill,
+                            bombStroke
+                    )
+            );
+        }
+    }
+
+    public List<Bomb> getBombs() {
+        return bombs;
     }
 }

@@ -4,6 +4,7 @@ import gridrunner.constants.Maps;
 import gridrunner.interfaces.ITargetAction;
 import gridrunner.interfaces.ITrigger;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
@@ -75,10 +76,12 @@ public abstract class ChoicePane extends StackPane implements ITrigger {
 
         mainBox.getChildren().addAll(titleBox, centralImgPane, buttonBox);
         mainBox.setAlignment(Pos.CENTER);
+        VBox.setVgrow(mainBox, Priority.ALWAYS);
+        VBox.setVgrow(titleBox, Priority.ALWAYS);
+        VBox.setVgrow(centralImgPane, Priority.ALWAYS);
+        VBox.setVgrow(buttonBox, Priority.ALWAYS);
 
         setAlignment(mainBox, Pos.CENTER);
-        setAlignment(titleBox, Pos.TOP_CENTER);
-        setAlignment(buttonBox, Pos.BOTTOM_CENTER);
 
         this.getChildren().add(mainBox);
     }
@@ -100,26 +103,31 @@ public abstract class ChoicePane extends StackPane implements ITrigger {
             choice.setOnMouseEntered(
                     event -> {
                         highlightImg(prevChoice[0], choice, false);
+                        choice.setCursor(Cursor.HAND);
                     }
             );
             choice.setOnMouseExited(
                     event -> {
                         unhighlightImg(prevChoice[0], choice);
+                        choice.setCursor(Cursor.DEFAULT);
                     }
             );
         }
         confirm.setOnMouseEntered(
                 event -> {
                     confirm.setEffect(Maps.MAP_CHOICE_CONFIRM_BUTTON_HIGHLIGHT);
+                    confirm.setCursor(Cursor.HAND);
                 }
         );
         confirm.setOnMouseExited(
                 event -> {
                     confirm.setEffect(Maps.MAP_CHOICE_CONFIRM_BUTTON_SHADOW);
+                    confirm.setCursor(Cursor.DEFAULT);
                 }
         );
         confirm.setOnMouseClicked(
                 event -> {
+                    confirm.setCursor(Cursor.WAIT);
                     this.hide();
                     trigger();
                 }

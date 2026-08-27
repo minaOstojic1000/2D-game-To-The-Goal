@@ -25,10 +25,14 @@ public class MapChoice extends ChoicePane {
     }
 
     protected void setImages() {
+        StringBuilder name = new StringBuilder();
+        name.append("/gridrunner/maps/map0.jpg");
+        double width = this.getPrefWidth() * 0.65 / (Maps.MAPS.length / 2.);
         for (int i = 0; i < Maps.MAPS.length; i++) {
-            ImageView imgView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/gridrunner/puppy.jpg"))));
+            name.replace(name.length() - 5, name.length() - 4, Integer.toString(i + 1));
+            ImageView imgView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(name.toString()))));
             choiceImages.add(imgView);
-            imgView.setFitWidth(200);
+            imgView.setFitWidth(width);
             imgView.setPreserveRatio(true);
         }
     }
@@ -116,7 +120,7 @@ public class MapChoice extends ChoicePane {
         GridPane pane = new GridPane(width * 0.03, height * 0.03);
         for (int i = 0; i < choiceImages.size() / 2; i++) {
             for (int j = 0; j < 2; j++) {
-                pane.add(choiceImages.get(i * 2 + j), i, j);
+                pane.add(choiceImages.get(i * 2 + j), j, i);
             }
         }
         return pane;

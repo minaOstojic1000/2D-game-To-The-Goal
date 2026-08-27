@@ -144,6 +144,8 @@ public class Level extends Group {
                         break;
                     }
                     case 'T' : {
+                        int distance = Math.max(Math.abs(column), Math.abs(map[row].length() - column)) - 1;
+                        boolean right = Math.abs(column) < Math.abs(map[row].length() - column);
                         TopTower topTower = new TopTower(
                                 Constants.TILE_SIZE,
                                 Constants.TILE_SIZE,
@@ -151,9 +153,19 @@ public class Level extends Group {
                                 positionY,
                                 Constants.TOP_TOWER_FILL,
                                 Constants.TOP_TOWER_STROKE,
-                                walls
+                                walls,
+                                Constants.NUM_OF_BOMBS,
+                                Constants.BOMB_RADIUS,
+                                Constants.TILE_SIZE,
+                                Constants.TILE_SIZE * distance,
+                                right,
+                                Constants.FLIGHT_BOMB_DURATION,
+                                Constants.PAUSE_BOMB_DURATION,
+                                Constants.BOMB_FILL,
+                                Constants.BOMB_STROKE
                         );
-                        this.getChildren().addAll(topTower, topTower.getBomb());
+                        this.getChildren().add(topTower);
+                        this.getChildren().addAll(topTower.getBombs());
                         break;
                     }
                 }

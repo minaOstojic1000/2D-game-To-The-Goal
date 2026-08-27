@@ -24,10 +24,14 @@ public class PlayerChoice extends ChoicePane{
 
     @Override
     protected void setImages() {
+        StringBuilder name = new StringBuilder();
+        name.append("/gridrunner/players/player0.jpg");
+        double width = this.getPrefWidth() * 0.75 / (Maps.MAPS.length);
         for (int i = 0; i < PlayersFeatures.PLAYERS.length; i++) {
-            ImageView imgView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/gridrunner/puppy.jpg"))));
+            name.replace(name.length() - 5, name.length() - 4, Integer.toString(i + 1));
+            ImageView imgView = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(name.toString()))));
             choiceImages.add(imgView);
-            imgView.setFitWidth(200);
+            imgView.setFitWidth(width);
             imgView.setPreserveRatio(true);
         }
     }
