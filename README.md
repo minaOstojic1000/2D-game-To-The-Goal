@@ -97,6 +97,7 @@ Some of the main game systems implemented in the project include:
 ### Requirements
 
 - JDK 17 or later
+- If you run the game using the Maven Wrapper command below, make sure the `JAVA_HOME` environment variable is defined and points to the root directory of your installed JDK (for example, `C:\Program Files\Java\jdk-17`), not to its `bin` directory.
 
 ### Using Maven Wrapper
 
