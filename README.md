@@ -20,6 +20,28 @@ The player must reach the green goal while avoiding hazards and collecting usefu
 
 ---
 
+## 🚀 Quick Start
+
+A pre-built version of the game is available in the
+[latest GitHub Release](https://github.com/minaOstojic1000/2D-game-To-The-Goal/releases/latest).
+
+### Requirements
+
+- **Java 17 or later** must be installed.
+- The `java` command must be available from the system terminal.
+
+You can verify your Java installation with:
+
+```bash
+java -version
+```
+
+Download `ToTheGoal.jar` from the latest release, open a terminal in the directory containing the file, and run:
+
+```bash
+java -jar ToTheGoal.jar
+```
+
 ## ✨ Features
 
 - Three selectable player types with different **movement speeds and health points**
@@ -92,7 +114,7 @@ Some of the main game systems implemented in the project include:
 
 ---
 
-## ▶️ Running the Game
+## ▶️ Running from Source
 
 ### Requirements
 
