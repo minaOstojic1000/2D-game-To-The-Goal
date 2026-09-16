@@ -3,7 +3,7 @@
 A single-player 2D game developed in **Java and JavaFX**, focused on movement, collision detection, dynamic obstacles, power-ups and multiple level configurations.
 
 <p align="center">
-  <img src="docs/gameplay.gif" width="750">
+  <img src="docs/ToTheGoalGIF.gif" width="350">
 </p>
 
 The goal is to navigate through the map, avoid enemies and obstacles, collect coins and power-ups, and safely reach the finish point.
