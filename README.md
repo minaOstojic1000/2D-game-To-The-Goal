@@ -25,7 +25,24 @@ The player must reach the green goal while avoiding hazards and collecting usefu
 A pre-built version of the game is available in the
 [latest GitHub Release](https://github.com/minaOstojic1000/2D-game-To-The-Goal/releases/latest).
 
-### Requirements
+### 🪟 Option 1: Windows — no Java required
+
+For the easiest setup, download `ToTheGoal-Windows.zip`.
+
+1. Extract the archive.
+2. Open the extracted folder and run `bin\ToTheGoal.bat`.
+
+No separate Java installation is required.
+
+### ☕ Option 2: JAR
+
+If you already have Java installed, download `ToTheGoal.jar` from the latest release, open a terminal in the directory containing the file, and run:
+
+```bash
+java -jar ToTheGoal.jar
+```
+
+#### Requirements
 
 - **Java 17 or later** must be installed.
 - The `java` command must be available from the system terminal.
@@ -36,11 +53,7 @@ You can verify your Java installation with:
 java -version
 ```
 
-Download `ToTheGoal.jar` from the latest release, open a terminal in the directory containing the file, and run:
-
-```bash
-java -jar ToTheGoal.jar
-```
+---
 
 ## ✨ Features
 
@@ -123,13 +136,15 @@ Some of the main game systems implemented in the project include:
 
 ### Using Maven Wrapper
 
-On Windows:
+From the **root directory of the project**, run:
 
-```bash
+#### On Windows:
+
+```powershell
 .\mvnw.cmd clean javafx:run
 ```
 
-On Linux/macOS:
+#### On Linux/macOS:
 
 ```bash
 ./mvnw clean javafx:run
@@ -147,7 +162,7 @@ The assignment focused on the development of a 2D single-player game using JavaF
 
 ---
 
-## 👤 Author
+## 👩‍💻 Author
 
 **Mina Ostojić**
 
